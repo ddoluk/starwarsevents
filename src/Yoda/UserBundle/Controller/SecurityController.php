@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SecurityController extends Controller
 {
@@ -38,5 +39,12 @@ class SecurityController extends Controller
             'last_username' => $lastUsername,
             'error' => $error,
         );
+    }
+
+    /**
+     * @Route("/login_check",name="login_check")
+     */
+    public function loginCheckAction()
+    {
     }
 }
