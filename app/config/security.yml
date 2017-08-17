@@ -10,7 +10,6 @@ security:
         our_database_user:
             entity:
                 class: Yoda\UserBundle\Entity\User
-                property: username
 
     firewalls:
         secured_area:
