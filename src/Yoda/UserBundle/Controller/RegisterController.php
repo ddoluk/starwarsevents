@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Yoda\UserBundle\Entity\User;
 use Yoda\UserBundle\Form\RegisterFormType;
 
@@ -40,6 +41,8 @@ class RegisterController extends Controller
                     'Welcome to the Death Star, have a magical day!'
                 );
 
+            $this->authenticateUser($user);
+
             $url = $this->generateUrl('event');
 
             return $this->redirect($url);
@@ -54,5 +57,12 @@ class RegisterController extends Controller
             ->getEncoder($user);
 
         return $encoder->encodePassword($plainPassword, $user->getSalt());
+    }
+
+    private function authenticateUser(User $user)
+    {
+        $providerKey = 'secured_area';
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+        $this->container->get('security.context')->setToken($token);
     }
 }
