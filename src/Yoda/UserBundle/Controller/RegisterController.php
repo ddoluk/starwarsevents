@@ -34,6 +34,12 @@ class RegisterController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $request->getSession()->getFlashBag()
+                ->add(
+                    'success',
+                    'Welcome to the Death Star, have a magical day!'
+                );
+
             $url = $this->generateUrl('event');
 
             return $this->redirect($url);
