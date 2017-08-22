@@ -85,7 +85,7 @@ class EventController extends Controller
      */
     public function newAction()
     {
-        $this->enforceUserSecurity();
+        $this->enforceUserSecurity('ROLE_EVENT_CREATE');
 
         $entity = new Event();
         $form = $this->createCreateForm($entity);
