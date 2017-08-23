@@ -48,7 +48,7 @@ class EventController extends Controller
 
         if ($form->isValid()) {
             $user = $this->getUser();
-            
+
             $entity->setOwner($user);
 
             $em = $this->getDoctrine()->getManager();
