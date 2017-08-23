@@ -47,6 +47,10 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $user = $this->getUser();
+            
+            $entity->setOwner($user);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -242,7 +246,7 @@ class EventController extends Controller
     {
         $securityContext = $this->get('security.context');
         if (!$securityContext->isGranted($role)) {
-            throw new AccessDeniedException('Need '.$role);
+            throw new AccessDeniedException('Need ' . $role);
         }
     }
 }

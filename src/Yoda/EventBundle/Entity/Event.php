@@ -3,6 +3,7 @@
 namespace Yoda\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Yoda\UserBundle\Entity\User;
 
 /**
  * Event
@@ -49,11 +50,17 @@ class Event
      */
     private $details;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Yoda\UserBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $owner;
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +83,7 @@ class Event
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -99,7 +106,7 @@ class Event
     /**
      * Get time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getTime()
     {
@@ -122,7 +129,7 @@ class Event
     /**
      * Get location
      *
-     * @return string 
+     * @return string
      */
     public function getLocation()
     {
@@ -145,10 +152,28 @@ class Event
     /**
      * Get details
      *
-     * @return string 
+     * @return string
      */
     public function getDetails()
     {
         return $this->details;
     }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner(User $owner)
+    {
+        $this->owner = $owner;
+    }
+
+
 }
