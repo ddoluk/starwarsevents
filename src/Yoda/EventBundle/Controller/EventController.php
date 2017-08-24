@@ -3,7 +3,6 @@
 namespace Yoda\EventBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Yoda\EventBundle\Entity\Event;
@@ -250,18 +249,10 @@ class EventController extends Controller
 
     private function enforceUserSecurity($role = 'ROLE_USER')
     {
-        $securityContext = $this->get('security.context');
-        if (!$securityContext->isGranted($role)) {
+        if (!$this->getSecurityContext()->isGranted($role)) {
             throw new AccessDeniedException('Need ' . $role);
         }
     }
 
-    private function enforceOwnerSecurity(Event $event)
-    {
-        $user = $this->getUser();
 
-        if ($user != $event->getOwner()) {
-            throw new AccessDeniedException('You are not the owner!!!');
-        }
-    }
 }
