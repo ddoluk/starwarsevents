@@ -241,7 +241,9 @@ class EventController extends Controller
             throw $this->createNotFoundException('No event found for id ' . $id);
         }
 
-        $event->getAttendees()->add($this->getUser());
+        if (!$event->hasAttendee($this->getUser())) {
+            $event->getAttendees()->add($this->getUser());
+        }
 
         $em->persist($event);
         $em->flush();
@@ -252,8 +254,25 @@ class EventController extends Controller
 
     }
 
-    public function unanttendAction($id)
+    public function unattendAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException('No event found for id ' . $id);
+        }
+
+        if ($event->hasAttendee($this->getUser())) {
+            $event->getAttendees()->removeElement($this->getUser());
+        }
+
+        $em->persist($event);
+        $em->flush();
+
+        $url = $this->generateUrl('event_show', array('slug' => $event->getSlug()));
+
+        return $this->redirect($url);
     }
 
     /**
