@@ -25,16 +25,7 @@ class EventController extends Controller
      */
     public function indexAction()
     {
-        throw new \Exception('Ahhhhahahhhah');
-
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('EventBundle:Event')
-            ->getUpcomingEvents();
-
-        return array(
-            'entities' => $entities,
-        );
+        return array();
     }
 
     /**
@@ -272,6 +263,18 @@ class EventController extends Controller
         $em->flush();
 
         return $this->createAttendingResponse($event, $format);
+    }
+
+    public function _upcomingEventsAction($max = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $events = $em->getRepository('EventBundle:Event')
+            ->getUpcomingEvents($max);
+
+        return $this->render('EventBundle:Event:_upcomingEvents.html.twig', array(
+            'events' => $events,
+        ));
     }
 
     /**
