@@ -27,4 +27,4 @@ class EventExtension extends \Twig_Extension
     {
         return DateUtil::ago($dt);
     }
-} 
+}

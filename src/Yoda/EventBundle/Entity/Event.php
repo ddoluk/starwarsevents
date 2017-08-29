@@ -3,6 +3,7 @@
 namespace Yoda\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Yoda\UserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="yoda_event")
  * @ORM\Entity(repositoryClass="Yoda\EventBundle\Entity\EventRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Event
 {
@@ -68,7 +70,6 @@ class Event
     private $slug;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -254,6 +255,16 @@ class Event
     public function hasAttendee(User $user)
     {
         return $this->getAttendees()->contains($user);
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist()
+    {
+        if (!$this->getCreatedAt()) {
+            $this->createdAt = new \DateTime();
+        }
     }
 
 }
