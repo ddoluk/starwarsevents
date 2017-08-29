@@ -5,7 +5,6 @@ namespace Yoda\EventBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Yoda\EventBundle\Reporting\EventReportManager;
 
 class ReportController extends Controller
 {
@@ -15,9 +14,7 @@ class ReportController extends Controller
 
     public function updatedEventsAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $eventRepositoryManager = new EventReportManager($em);
-
+        $eventRepositoryManager = $this->container->get('event_report_manager');
         $content = $eventRepositoryManager->getRecentlyUpdatedReport();
 
         $response = new Response($content);
